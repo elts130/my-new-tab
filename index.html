@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个性化起始页 - 增强版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-default">
+    <div class="overlay" id="overlay"></div>
+    <div class="notification" id="notification"></div>
+    
+    <!-- 链接编辑模态窗口 -->
+    <div class="modal" id="linkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">编辑快速链接</h2>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="link-form">
+                <div class="form-group">
+                    <label class="form-label">链接名称</label>
+                    <input type="text" class="form-input" id="modalLinkName" placeholder="例如：百度">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">链接网址</label>
+                    <input type="url" class="form-input" id="modalLinkUrl" placeholder="例如：https://www.baidu.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">图标类名 (FontAwesome)</label>
+                    <input type="text" class="form-input" id="modalLinkIcon" placeholder="例如：fab fa-google">
+                    <small style="opacity: 0.7; margin-top: 5px;">请参考FontAwesome图标库，留空将使用默认图标</small>
+                </div>
+                <button class="settings-button" id="modalAddLink">添加链接</button>
+            </div>
+            <div class="link-list" id="modalLinkList">
+                <!-- 链接列表将通过JS动态生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="datetime">
+                <div class="time" id="time">00:00:00</div>
+                <div class="date" id="date">2023年1月1日 星期一</div>
+            </div>
+            
+            <div class="weather" id="weather">
+                <div class="weather-icon">
+                    <i class="fas fa-sun" id="weatherIcon"></i>
+                </div>
+                <div class="weather-temp" id="weatherTemp">25°C</div>
+                <div class="weather-details">
+                    <div class="weather-city" id="weatherCity">北京</div>
+                    <div class="weather-desc" id="weatherDesc">晴朗</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="搜索或输入网址" id="searchInput">
+            <select class="search-engine-selector" id="searchEngine">
+                <option value="baidu">百度</option>
+                <option value="google">谷歌</option>
+                <option value="bing">必应</option>
+                <option value="duckduckgo">DuckDuckGo</option>
+            </select>
+        </div>
+        
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">快速链接</h2>
+                    <button class="card-action" id="editLinks">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <div class="quick-links" id="quickLinks">
+                    <a href="https://www.baidu.com" class="link-item" target="_blank">
+                        <div class="link-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <span class="link-name">百度</span>
+                        <button class="link-delete">×</button>
+                    </a>
+                    <a href="https://www.github.com" class="link-item" target="_blank">
+                        <div class="link-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <span class="link-name">GitHub</span>
+                        <button class="link-delete">×</button>
+                    </a>
+                    <a href="https://www.youtube.com" class="link-item" target="_blank">
+                        <div class="link-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <span class="link-name">YouTube</span>
+                        <button class="link-delete">×</button>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">待办事项</h2>
+                    <button class="card-action" id="addTodoBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <ul class="todo-list" id="todoList">
+                    <li class="todo-item">
+                        <input type="checkbox" class="todo-check">
+                        <span class="todo-text">完成项目提案</span>
+                        <button class="todo-delete"><i class="fas fa-times"></i></button>
+                    </li>
+                    <li class="todo-item">
+                        <input type="checkbox" class="todo-check">
+                        <span class="todo-text">准备会议资料</span>
+                        <button class="todo-delete"><i class="fas fa-times"></i></button>
+                    </li>
+                    <li class="todo-item">
+                        <input type="checkbox" class="todo-check">
+                        <span class="todo-text">购买生日礼物</span>
+                        <button class="todo-delete"><i class="fas fa-times"></i></button>
+                    </li>
+                </ul>
+                <input type="text" class="todo-input" placeholder="添加新任务..." id="todoInput">
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">笔记</h2>
+                    <button class="card-action" id="saveNoteBtn">
+                        <i class="fas fa-save"></i>
+                    </button>
+                </div>
+                <textarea class="notes-content" id="notesContent" placeholder="记录您的想法..."></textarea>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">资讯与名言</h2>
+                    <button class="card-action" id="refreshNewsBtn">
+                        <i class="fas fa-sync"></i>
+                    </button>
+                </div>
+                <div class="quote-container">
+                    <p class="quote-text" id="quoteText">"成功不是终点，失败不是致命：真正重要的是继续前进的勇气。"</p>
+                    <p class="quote-author" id="quoteAuthor">- 温斯顿·丘吉尔</p>
+                    <button class="settings-button" id="editQuoteBtn" style="margin-top: 10px;">编辑名言</button>
+                </div>
+                <div class="news-container" id="newsContainer">
+                    <div class="news-item">
+                        <div class="news-title">加载新闻中...</div>
+                        <div class="news-hotness"><i class="fas fa-fire"></i> <span>热度: 0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>个性化起始页 &copy; 2023 | 设计精美，功能丰富</p>
+        </footer>
+    </div>
+    
+    <div class="settings-toggle" id="settingsToggle">
+        <i class="fas fa-cog"></i>
+    </div>
+    
+    <div class="settings-panel" id="settingsPanel">
+        <button class="settings-close" id="settingsClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="settings-title">设置</h2>
+        
+        <div class="settings-item">
+            <label class="settings-label">背景主题</label>
+            <div class="theme-selector">
+                <div class="theme-option active" style="background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);" data-theme="default"></div>
+                <div class="theme-option" style="background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);" data-theme="dark"></div>
+                <div class="theme-option" style="background: linear-gradient(135deg, #0072ff, #00c6ff);" data-theme="blue"></div>
+                <div class="theme-option" style="background: linear-gradient(135deg, #f46b45, #eea849);" data-theme="orange"></div>
+                <div class="theme-option" style="background: linear-gradient(135deg, #4776E6, #8E54E9);" data-theme="purple"></div>
+                <div class="theme-option" style="background: linear-gradient(135deg, #FF512F, #DD2476);" data-theme="red"></div>
+            </div>
+        </div>
+        
+        <div class="settings-item">
+            <label class="settings-label">自定义背景图片</label>
+            <input type="url" class="settings-input" id="bgImageInput" placeholder="输入图片URL">
+            <button class="settings-button" id="saveBgImageBtn">应用背景图片</button>
+            <button class="settings-button" id="resetBgImageBtn">重置为渐变背景</button>
+        </div>
+        
+        <div class="settings-item">
+            <label class="settings-label">默认搜索引擎</label>
+            <select class="settings-input" id="defaultSearchEngine">
+                <option value="baidu">百度</option>
+                <option value="google">谷歌</option>
+                <option value="bing">必应</option>
+                <option value="duckduckgo">DuckDuckGo</option>
+            </select>
+        </div>
+        
+        <div class="settings-item">
+            <label class="settings-label">天气设置</label>
+            <input type="text" class="settings-input" id="cityInput" placeholder="输入城市名称">
+            <div class="api-key-info">需要OpenWeatherMap API密钥才能获取实时天气数据</div>
+            <input type="text" class="settings-input" id="apiKeyInput" placeholder="输入API密钥（可选）" style="margin-top: 10px;">
+            <button class="settings-button" id="saveCityBtn" style="margin-top: 10px;">保存</button>
+        </div>
+        
+        <div class="settings-item">
+            <label class="settings-label">资讯与名言设置</label>
+            <button class="settings-button" id="editQuotesBtn">编辑名言库</button>
+            <button class="settings-button" id="fetchNewsBtn">刷新新闻</button>
+        </div>
+        
+        <div class="settings-item">
+            <label class="settings-label">数据管理</label>
+            <button class="settings-button" id="exportDataBtn">导出数据</button>
+            <button class="settings-button" id="importDataBtn">导入数据</button>
+            <button class="settings-button" id="resetDataBtn">重置数据</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
